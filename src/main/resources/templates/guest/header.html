@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng Mỹ Phẩm</title>
+    <link rel="icon" th:href="@{/img/logo.png}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+<body class="bg-gray-50 text-gray-800">
+<div th:fragment="header">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="mx-auto px-16 py-3 flex justify-between items-center">
+
+            <a th:href="@{/guest}" class="text-2xl font-bold text-pink-600 hover:text-pink-700">
+                Cửa Hàng Mỹ Phẩm
+            </a>
+
+            <ul class="hidden md:flex space-x-6 font-medium">
+                <li><a th:href="@{/guest}" class="hover:text-pink-600">Trang chủ</a></li>
+                <li class="relative">
+                    <!-- Nút mở dropdown -->
+                    <button id="menuButton"
+                            class="flex items-center gap-1 hover:text-pink-600 text-gray-700 font-medium transition">
+                        Danh mục
+                        <i id="chevronIcon" class="fa-solid fa-chevron-down text-xs ml-1 transition-transform duration-300"></i>
+                    </button>
+
+                    <!-- Menu dropdown -->
+                    <div id="dropdownMenu"
+                         class="absolute left-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 scale-y-0 origin-top transition-all duration-300 z-50">
+                        <ul class="py-2 text-gray-700">
+                            <li><a th:href="@{/guest/product/san-pham-moi}" class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">Sản phẩm mới</a></li>
+                            <li><a th:href="@{/guest/product/giam-gia}" class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">Khuyến mãi</a></li>
+                            <li><a th:href="@{/guest/product/ban-chay}" class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">Bán chạy</a></li>
+
+                            <li>
+                                <a th:href="@{/guest/product/phan-loai(query='Sữa rửa mặt')}"
+                                   class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                                    Sữa rửa mặt
+                                </a>
+                            </li>
+
+                            <li>
+                                <a th:href="@{/guest/product/phan-loai(query='Toner')}"
+                                   class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                                    Toner
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/guest/product/phan-loai(query='Serum')}"
+                                   class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                                    Serum
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/guest/product/phan-loai(query='Kem dưỡng ẩm')}"
+                                   class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                                    Kem dưỡng ẩm
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li><a th:href="@{/guest/lien-he}" class="hover:text-pink-600">Liên hệ</a></li>
+            </ul>
+
+            <form th:action="@{/guest/tim-kiem}" method="get" class="hidden md:block relative w-96">
+                <input type="text" name="query" placeholder="Bạn cần tìm gì?"
+                       class="w-full px-6 py-2 pr-10 border rounded-lg outline-none focus:ring-2 focus:ring-pink-300"
+                       autocomplete="off">
+
+                <button type="submit"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-pink-500">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+
+            <button id="loginBtn"
+                    class="w-62 flex items-center gap-2 border-2 border-pink-500 text-pink-600 font-medium px-4 py-2 rounded-full
+              hover:bg-pink-50 hover:shadow-sm transition duration-200">
+                </i> Đăng nhập
+            </button>
+        </div>
+    </nav>
+
+    <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg w-80 relative shadow-lg">
+            <button id="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-pink-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 class="text-xl font-bold text-pink-600 mb-3 text-center">Đăng nhập</h2>
+            <form th:action="@{/login}" method="post" class="space-y-3">
+                <div>
+                    <label class="block text-sm mb-1 mt-1">Tên đăng nhập</label>
+                    <input type="text" name="username" required
+                           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Mật khẩu</label>
+                    <input type="password" name="password" required
+                           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none mb-2">
+                </div>
+                <button type="submit"
+                        class="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-lg mt-2 transition">Đăng nhập
+                </button>
+            </form>
+            <p class="text-center text-sm mt-2">Chưa có tài khoản?
+                <a href="#" id="showRegisterModal" class="text-pink-500 hover:underline">Đăng ký</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="registerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg w-80 relative shadow-lg">
+            <button id="closeRegisterModal" class="absolute top-3 right-3 text-gray-500 hover:text-pink-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 class="text-xl font-bold text-pink-600 mb-4 text-center">Đăng ký</h2>
+            <form th:action="@{/register}" method="post" class="space-y-3">
+                <div><label class="block text-sm mb-1 mt-1">Họ tên</label>
+                    <input type="text" name="hoTen" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none">
+                </div>
+                <div><label class="block text-sm mb-1 mt-1">Email</label>
+                    <input type="email" name="email" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none">
+                </div>
+                <div><label class="block text-sm mb-1 mt-1">Số điện thoại</label>
+                    <input type="number" name="soDienThoai" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none">
+                </div>
+                <div><label class="block text-sm mb-1 mt-1">Tên đăng nhập</label>
+                    <input type="text" name="tenDangNhap" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none">
+                </div>
+                <div><label class="block text-sm mb-1 mt-1">Mật khẩu</label>
+                    <input type="password" name="matKhau" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none">
+                </div>
+                <button type="submit"
+                        class="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-lg mt-2 transition">Đăng ký
+                </button>
+            </form>
+            <p class="text-center text-sm mt-3">Đã có tài khoản?
+                <a href="#" id="showLoginModal" class="text-pink-500 hover:underline">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+
+    <script th:src="@{/js/guest/header.js}"></script>
+</div>
+</body>
+</html>

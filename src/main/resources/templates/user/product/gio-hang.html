@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ Hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .no-spinner::-webkit-inner-spin-button,
+        .no-spinner::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        .no-spinner[type=number] {
+          -moz-appearance: textfield;
+        }
+
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 text-gray-800 font-['Be_Vietnam_Pro']">
+<div th:replace="user/header :: header"></div>
+
+<main class="flex-grow">
+    <section class="container mx-auto mt-12 px-16 mb-16">
+    <h2 class="text-2xl font-bold mb-6">Giỏ hàng của bạn</h2>
+
+    <div th:if="${#lists.isEmpty(cartItems)}">
+        <p class="text-gray-500">Chưa có mặt hàng nào trong giỏ:(</p>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <div th:each="item : ${cartItems}" class="flex items-center border-b py-4">
+            <!-- Ảnh sản phẩm -->
+            <img th:src="@{'/' + ${item.product.hinhAnh}}" th:alt="${item.product.ten}" class="w-20 h-20 object-cover rounded-md mr-4">
+
+            <div class="flex-1">
+                <p class="font-semibold" th:text="${item.product.ten}"></p>
+                <p class="text-sm text-gray-500" th:text="${item.product.phanloai}"></p>
+
+                <!-- Update quantity -->
+                <form th:action="@{'/user/gio-hang/update/' + ${item.product.id}}" method="post" class="flex items-center gap-2 mt-2">
+                    <button type="submit" name="action" value="decrease"
+                            class="w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-lg text-lg font-bold transition">-</button>
+                    <input type="number" th:value="${item.soLuong}" min="1" class="no-spinner w-16 text-center border border-gray-300 rounded-lg py-1 focus:outline-none focus:ring-2 focus:ring-pink-400" readonly/>
+                    <button type="submit" name="action" value="increase"
+                            class="w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-lg text-lg font-bold transition">+</button>
+                </form>
+            </div>
+
+            <!-- Giá tiền và xóa sản phẩm -->
+            <div class="text-right">
+                <p class="text-pink-600 font-semibold"
+                   th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'COMMA', 0, 'POINT')} + '₫'"></p>
+
+                <form th:action="@{'/user/gio-hang/remove/' + ${item.product.id}}" method="post" class="mt-2">
+                    <button type="submit" class="text-red-500 hover:text-red-700"><i class="fa fa-times"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tổng tiền -->
+        <div class="text-right pt-4">
+            <p class="text-lg font-semibold">
+                Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')} + '₫'"></span>
+            </p>
+
+            <button type="button"
+                    class="mt-2 bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-lg"
+                    onclick="openModal()">
+                Đặt hàng
+            </button>
+
+            <!-- Modal nhập thông tin -->
+            <div id="checkoutModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white rounded-2xl shadow-xl w-96 p-6">
+                    <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">Xác nhận đặt hàng</h2>
+
+                    <form th:action="@{/user/gio-hang/checkout}" method="post" id="checkoutForm">
+                        <div class="mb-3">
+                            <label class="block text-sm mb-1 mt-1">Tên người nhận</label>
+                            <input type="text" name="customerName" th:value="${customerName}" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="block text-sm mb-1 mt-1">Số điện thoại</label>
+                            <input type="text" name="sdt" th:value="${customerPhone}" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm mb-1 mt-1">Địa chỉ giao hàng</label>
+                            <textarea name="diaChi" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none" required></textarea>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button type="button"
+                                    onclick="closeModal()"
+                                    class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400">
+                                Hủy
+                            </button>
+                            <button type="submit"
+                                    class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    </section>
+</main>
+
+<div th:replace="fragment/footer :: footer"></div>
+
+</body>
+<script>
+    function openModal() {
+        document.getElementById('checkoutModal').classList.remove('hidden');
+    }
+    function closeModal() {
+        document.getElementById('checkoutModal').classList.add('hidden');
+    }
+</script>
+</html>
