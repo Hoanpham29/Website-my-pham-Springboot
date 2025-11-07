@@ -31,6 +31,8 @@ public class AuthController {
             return "redirect:/guest?loginError";
         }
         session.setAttribute("user", user);
+        if(user.getVaiTro()==1)
+            return "redirect:/admin";
         return "redirect:/user";
     }
 

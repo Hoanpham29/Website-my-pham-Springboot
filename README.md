@@ -59,6 +59,8 @@ Dự án được phát triển bằng **Spring Boot 3.x**, **Java 17**, **MySQL
 Bạn có thể chạy bằng **IntelliJ IDEA**, **Eclipse**, hoặc **Terminal**.
 
 ---
+## Diagram SQL
+![Sơ đồ cơ sở dữ liệu](screenshots/diagram.png)
 
 ## Ảnh demo giao diện
 
@@ -72,5 +74,5 @@ Bạn có thể chạy bằng **IntelliJ IDEA**, **Eclipse**, hoặc **Terminal*
 ### Đơn hàng đã đặt
 ![Đơn hàng](screenshots/myorder.png)
 
-### Đơn hàng đã đặt
-![Danh mục](screenshots/category.png)
+### Trang admin
+![Trang Admin](screenshots/admin.png)
