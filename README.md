@@ -73,3 +73,6 @@ Bạn có thể chạy bằng **IntelliJ IDEA**, **Eclipse**, hoặc **Terminal*
 
 ### Đơn hàng đã đặt
 ![Đơn hàng](screenshots/myorder.png)
+
+### Trang admin
+![Trang Admin](screenshots/admin.png)
