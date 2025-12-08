@@ -105,7 +105,7 @@
         <span th:unless="${currentPage > 0}"
               class="flex items-center justify-center w-9 h-9 border rounded-full bg-gray-100 text-gray-400 cursor-not-allowed shadow-sm">
         <i class="fa-solid fa-chevron-left text-xs"></i>
-    </span>
+        </span>
 
         <!-- Các trang -->
         <span th:each="page : ${#numbers.sequence(0, totalPages - 1)}">

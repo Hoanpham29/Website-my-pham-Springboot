@@ -1,6 +1,7 @@
 package com.example.Website_ban_hang.service;
 import com.example.Website_ban_hang.model.Product;
 import com.example.Website_ban_hang.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +31,13 @@ public class ProductService {
     public List<Product> getProductByCategory(String phanloai) {return productRepository.findByPhanloai(phanloai);}
 
     public List<Product> getProductBySearch(String query){return productRepository.searchProducts(query);}
+
+    @Transactional
+    public void deleteProductById(int id){productRepository.deleteById(id);}
+
+    public void save(Product product)
+    {
+        productRepository.save(product);
+    }
+
 }
