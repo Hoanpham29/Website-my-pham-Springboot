@@ -10,6 +10,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User findById(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+    }
+
     public void updateUser(User user) {
         userRepository.save(user);
     }

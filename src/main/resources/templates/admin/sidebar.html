@@ -9,13 +9,13 @@
 <body class="bg-gray-100">
 
 <aside th:fragment="sidebar"
-       class="fixed top-0 left-0 h-screen w-56 bg-gray-800 text-white flex flex-col shadow-lg">
+       class="fixed top-0 left-0 h-screen w-56 bg-gray-800 text-white flex flex-col shadow-lg
+                fixed top-0 left-0 z-50 shadow">
 
     <div class="flex items-center px-6 py-3 h-16 border-b border-gray-700">
-        <span class="text-lg font-semibold">Quản lý cửa hàng</span>
+        <span class="text-gray-300 text-lg font-semibold">Quản Lý Cửa Hàng</span>
     </div>
 
-    <!-- Menu -->
     <nav class="flex-1 overflow-y-auto mt-4">
         <a th:href="@{/admin}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition"
            th:classappend="${page=='home'} ? ' bg-gray-700 text-white'">

@@ -76,3 +76,4 @@ Bạn có thể chạy bằng **IntelliJ IDEA**, **Eclipse**, hoặc **Terminal*
 
 ### Trang admin
 ![Trang Admin](screenshots/admin.png)
+![Trang Admin](screenshots/admin2.png)

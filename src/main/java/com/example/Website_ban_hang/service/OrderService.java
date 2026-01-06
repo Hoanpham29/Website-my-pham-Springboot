@@ -21,14 +21,10 @@ public class    OrderService {
     private CartRepository cartRepository;
 
     public Order datHang(User user, String sdt, String diaChi, double tongTien) {
-        // Tạo đơn hàng
         Order order = new Order(user, sdt, diaChi, tongTien);
         order = orderRepository.save(order);
-
-        // Lấy danh sách giỏ hàng
         List<Cart> carts = cartRepository.findByUser(user);
 
-        // Tạo chi tiết đơn hàng
         List<OrderDetail> chiTietList = new ArrayList<>();
         for (Cart cart : carts) {
             OrderDetail chiTiet = new OrderDetail(order, cart.getProduct(), cart.getSoLuong());
@@ -36,8 +32,6 @@ public class    OrderService {
         }
 
         orderDetailRepository.saveAll(chiTietList);
-
-        // Xóa giỏ hàng sau khi đặt
         cartRepository.deleteAll(carts);
 
         return order;

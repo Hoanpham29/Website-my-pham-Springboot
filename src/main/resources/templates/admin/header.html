@@ -2,59 +2,55 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Header - Admin</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng Mỹ Phẩm</title>
+    <link rel="icon" th:href="@{/img/logo.png}">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-<nav class="bg-white border-gray-200 dark:bg-gray-900" th:fragment="header">
-    <div class="flex items-center justify-between mx-auto p-3 ml-2 mr-2">
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-        </span>
 
-        <div class="relative">
-            <button type="button"
-                    class="avatar text-sm rounded-full"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    onclick="toggleDropdown(event)">
-                <span class="sr-only">Open user menu</span>
-                <i class="fas fa-user-circle" style="font-size:28px"></i>
-            </button>
+<body class="bg-gray-50 text-gray-800">
+<div class="bg-white border-gray-200 dark:bg-gray-900 w-full p-4 h-16" th:fragment="header"></div>
+<div th:fragment="header">
+    <nav class="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+        <div class="px-6 py-3 flex items-right">
 
-            <div id="user-dropdown"
-                 class="dropdown-menu absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-700 dark:border-gray-600 z-50 hidden">
-                <div class="user-dropdown px-4 py-3">
-                    <span class="block text-sm text-gray-900 dark:text-white"
-                          th:text="${session.user.hoTen}">Tên người dùng</span>
-                    <span class="block text-sm text-gray-500 truncate dark:text-gray-400"
-                          th:text="${session.user.sdt}">Số điện thoại</span>
+            <div class="ml-auto relative">
+
+                <button id="userMenuBtn"
+                        class="flex items-center justify-center w-11 h-11 rounded-full
+                               bg-gray-100 text-gray-600
+                               hover:bg-gray-200 hover:shadow-md
+                               transition duration-200">
+                    <i class="fa-solid fa-user text-lg"></i>
+                </button>
+
+                <!-- Dropdown -->
+                <div id="userDropdown"
+                     class="absolute right-0 mt-2 w-60 bg-white border border-gray-100
+                        rounded-xl shadow-lg opacity-0 scale-y-0
+                        transition-all duration-300 origin-top z-50">
+
+                    <ul th:if="${user != null}" class="py-2 text-gray-700">
+                        <li>
+                        <span th:text="'Admin ' + ${user.hoTen}"
+                              class="block px-4 py-2 text-black font-semibold text-lg">
+                        </span>
+                        </li>
+                        <li>
+                            <a th:href="@{/logout}"
+                               class="block px-4 py-2 hover:bg-pink-50 hover:text-pink-600">
+                                <i class="mr-2 fa-solid fa-right-from-bracket"></i>Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+
                 </div>
-                <ul class="log-out">
-                    <a th:href="@{/logout}" class="dropdown-item block px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">
-                        Đăng xuất
-                    </a>
-                </ul>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<script>
-    function toggleDropdown(event) {
-        event.stopPropagation();
-        const dropdown = document.getElementById('user-dropdown');
-        dropdown.classList.toggle('hidden');
-    }
-
-    // Đóng dropdown khi click ra ngoài
-    document.addEventListener('click', function (e) {
-        const dropdown = document.getElementById('user-dropdown');
-        const button = document.getElementById('user-menu-button');
-        if (!button.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.add('hidden');
-        }
-    });
-</script>
+    <script th:src="@{/js/user/header.js}"></script>
+</div>
 </body>
 </html>
